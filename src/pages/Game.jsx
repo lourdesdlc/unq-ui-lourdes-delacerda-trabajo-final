@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { getQuestions, postAnswer } from "../services/api";
-import { useNavigate } from "react-router-dom";
+import "../index.css";
 
 const Game = () => {
-  const location = useLocation();
-  const difficulty = location.state?.difficulty || "easy";
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const difficulty = searchParams.get("difficulty") || "easy";
 
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [score, setScore] = useState(0);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -47,13 +48,15 @@ const Game = () => {
 
   const handleAnswer = async (selectedOption) => {
     const currentQuestion = questions[currentIndex];
+    let puntaje = score;
 
     try {
       const result = await postAnswer(currentQuestion.id, selectedOption);
 
       if (result.answer) {
         alert("¡Correcto!");
-        // SUMAR PUNTOS
+        puntaje++;
+        setScore(puntaje);
       } else {
         alert("Incorrecto :(");
       }
@@ -63,8 +66,13 @@ const Game = () => {
       if (nextIndex < questions.length) {
         setCurrentIndex(nextIndex);
       } else {
-        alert("¡Juego terminado!");
-        navigate("/result");
+        //alert("¡Juego terminado!");
+        navigate("/result", {
+          state: {
+            score: puntaje,
+            total: questions.length,
+          },
+        });
       }
     } catch (error) {
       console.error("Error al enviar respuesta", error);
@@ -83,6 +91,7 @@ const Game = () => {
       <div className="question-card">
         <h2>{currentQuestion.question}</h2>
 
+        {/* QUEDA MARCADO EL BUTTON CON LA RESPUESTA ANTERIOR, ARREGLAR! */}
         <div className="options-grid">
           {optionsList.map((item) => (
             <button

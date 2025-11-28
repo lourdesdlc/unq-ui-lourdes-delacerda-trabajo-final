@@ -21,22 +21,29 @@ const Home = () => {
     fetchDificultades();
   }, []);
 
-  const handleDifficultyClick = (dificultad) => {
-    navigate("/game", { state: { difficulty: dificultad } });
+  const handleDifficultyClick = (difficulty) => {
+    navigate(`/game?difficulty=${difficulty}`);
   };
 
   return (
     <div className="home-container">
-      <h1>Bienvenido al Trivia UNQ</h1>
+      <h1>Trivia UNQ</h1>
       <h3>Seleccioná una dificultad para comenzar:</h3>
-
-      <div className="button-container">
-        {dificultades.map((diff) => (
-          <button key={diff} onClick={() => handleDifficultyClick(diff)}>
-            {diff}
-          </button>
-        ))}
-      </div>
+      {dificultades.length === 0 ? (
+        <p>Cargando dificultades...</p>
+      ) : (
+        <div className="button-container">
+          {dificultades.map((diff) => (
+            <button
+              key={diff}
+              className="difficulty-btn"
+              onClick={() => handleDifficultyClick(diff)}
+            >
+              {diff}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
