@@ -37,22 +37,16 @@ const Game = () => {
   }
 
   const currentQuestion = questions[currentIndex];
-  //siempre son 4 preguntas en la api
+
   const optionsList = [
-    currentQuestion.option1,
-    currentQuestion.option2,
-    currentQuestion.option3,
-    currentQuestion.option4,
+    { key: "option1", value: currentQuestion.option1 },
+    { key: "option2", value: currentQuestion.option2 },
+    { key: "option3", value: currentQuestion.option3 },
+    { key: "option4", value: currentQuestion.option4 },
   ];
 
   const handleAnswer = async (selectedOption) => {
     const currentQuestion = questions[currentIndex];
-
-    // NO HAY RESPUESTA CORRECTA? NO EXISTE /answer??
-    console.log("Enviando respuesta...");
-    console.log("ID Pregunta:", currentQuestion.id);
-    console.log("Opción elegida:", selectedOption);
-    // -------------------
 
     try {
       const result = await postAnswer(currentQuestion.id, selectedOption);
@@ -90,13 +84,13 @@ const Game = () => {
         <h2>{currentQuestion.question}</h2>
 
         <div className="options-grid">
-          {optionsList.map((option, index) => (
+          {optionsList.map((item) => (
             <button
-              key={`${index}-${option}`}
+              key={item.key}
               className="option-btn"
-              onClick={() => handleAnswer(option)}
+              onClick={() => handleAnswer(item.key)}
             >
-              {option}
+              {item.value}
             </button>
           ))}
         </div>
