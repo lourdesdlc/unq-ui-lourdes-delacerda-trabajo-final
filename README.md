@@ -1,10 +1,6 @@
-# UNQ » UIs » TFI » Preguntados
+# UNQ » UIs » TFI » Preguntados » Lourdes de la Cerda 
 
 Trabajo Final Integrador para la materia Construcción de Interfaces de Usuario, Universidad Nacional de Quilmes.
-
-## Datos del Alumno
-
-- **Nombre:** Lourdes de la Cerda
 
 ## Descripción
 
