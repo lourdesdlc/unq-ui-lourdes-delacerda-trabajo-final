@@ -82,6 +82,7 @@ const Game = () => {
   return (
     <div className="game-container">
       <div className="game-header">
+        <span className="score-counter">Puntos: {score}</span>
         <span>Dificultad: {difficulty}</span>
         <span>
           Pregunta {currentIndex + 1} / {questions.length}
