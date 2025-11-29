@@ -14,23 +14,26 @@ const Game = () => {
   const [score, setScore] = useState(0);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     const fetchQuestions = async () => {
-      //ACA HAY UN BUG, SE MUESTRA DOS PREGUNTAS, UNA CON LA DIFICULTAD VIEJA
-      //Y RAPIDAMENTE LA NUEVA DIFICULTAD QUE ELEJIMOS
       try {
         const data = await getQuestions(difficulty);
 
-        //ACA SE PUEDE VER QUE LLEGAN DOS preguntas!
-        console.log("Datos que llegaron de la API:", data);
-
         setQuestions(data);
-        setIsLoading(false);
       } catch (error) {
         console.error(error);
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsLoading(false);
+        }
       }
     };
 
     fetchQuestions();
+    return () => {
+      controller.abort();
+    };
   }, [difficulty]);
 
   if (isLoading) {

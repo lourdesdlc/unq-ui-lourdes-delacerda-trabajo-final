@@ -2,6 +2,7 @@ import axios from "axios";
 import { data } from "react-router-dom";
 const api = axios.create({
   baseURL: "https://preguntados-api.vercel.app/api",
+  timeout: 10000,
 });
 
 export const getDifficulties = async () => {
