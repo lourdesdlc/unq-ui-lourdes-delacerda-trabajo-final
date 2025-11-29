@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getDifficulties } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo-preguntados.png";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -27,7 +28,8 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <h1>Trivia UNQ</h1>
+      <img src={logo} alt="Logo Preguntados" className="logo" />
+      <h1>Preguntados</h1>
       <h3>Seleccioná una dificultad para comenzar:</h3>
       {dificultades.length === 0 ? (
         <p>Cargando dificultades...</p>
