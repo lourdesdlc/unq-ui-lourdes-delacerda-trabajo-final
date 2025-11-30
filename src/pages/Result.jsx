@@ -1,18 +1,33 @@
-import React from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import "../index.css";
 
 const Result = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const state = location.state;
 
-  const score = location.state?.score || 0;
-  const total = location.state?.total || 0;
+  useEffect(() => {
+    if (!state) {
+      navigate("/", { replace: true });
+    }
+  }, [state, navigate]);
 
+  if (!state) {
+    return null;
+  }
+
+  const { score, total } = state;
   const percentage = total > 0 ? (score / total) * 100 : 0;
+
   let message = "¡Sigue practicando!";
-  if (percentage >= 50) message = "¡Bien hecho!";
-  if (percentage >= 80) message = "¡Excelente!";
-  if (percentage === 100) message = "¡Perfecto! Sos un genio.";
+  if (percentage === 100) {
+    message = "¡Perfecto! Sos un genio.";
+  } else if (percentage >= 80) {
+    message = "¡Excelente!";
+  } else if (percentage >= 50) {
+    message = "¡Bien hecho!";
+  }
 
   const handlePlayAgain = () => {
     navigate("/");

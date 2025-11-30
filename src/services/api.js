@@ -18,7 +18,7 @@ export const getDifficulties = async () => {
 export const getQuestions = async (difficulty) => {
   try {
     const response = await api.get("/questions", {
-      params: { difficulty: difficulty },
+      params: { difficulty },
     });
     return response.data;
   } catch (error) {
@@ -30,8 +30,8 @@ export const getQuestions = async (difficulty) => {
 export const postAnswer = async (questionId, option) => {
   try {
     const response = await api.post("/answer", {
-      questionId: questionId,
-      option: option,
+      questionId,
+      option,
     });
     return response.data;
   } catch (error) {

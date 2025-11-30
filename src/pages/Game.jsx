@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getQuestions, postAnswer } from "../services/api";
+import QuestionCard from "../components/QuestionCard";
 import "../index.css";
 
 const Game = () => {
@@ -14,6 +15,7 @@ const Game = () => {
   const [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
+  const [apiError, setApiError] = useState(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -38,11 +40,53 @@ const Game = () => {
     };
   }, [difficulty]);
 
+  const handleAnswer = async (itemKey) => {
+    if (selectedOption) return;
+    setSelectedOption(itemKey);
+    setApiError(null);
+    const currentQuestion = questions[currentIndex];
+
+    try {
+      const result = await postAnswer(currentQuestion.id, itemKey);
+      setIsCorrect(result.answer);
+
+      let currentScore = score;
+      if (result.answer) {
+        currentScore = score + 1;
+        setScore(currentScore);
+      }
+
+      setTimeout(() => {
+        const nextIndex = currentIndex + 1;
+        if (nextIndex < questions.length) {
+          setCurrentIndex(nextIndex);
+          setSelectedOption(null);
+          setIsCorrect(null);
+        } else {
+          navigate("/result", {
+            state: { score: currentScore, total: questions.length },
+          });
+        }
+      }, 1500);
+    } catch (error) {
+      console.error("Error al enviar respuesta", error);
+      setApiError("Hubo un problema de conexion. Intente de nuevo.");
+      setSelectedOption(null);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="loading-container">
         <div className="spinner"></div>
         <p>Cargando preguntas...</p>
+      </div>
+    );
+  }
+  if (questions.length === 0) {
+    return (
+      <div className="game-container">
+        <p>No hay preguntas disponibles.</p>
       </div>
     );
   }
@@ -56,42 +100,6 @@ const Game = () => {
     { key: "option4", value: currentQuestion.option4 },
   ];
 
-  const handleAnswer = async (itemKey) => {
-    if (selectedOption) return;
-    setSelectedOption(itemKey);
-
-    const currentQuestion = questions[currentIndex];
-
-    try {
-      const result = await postAnswer(currentQuestion.id, itemKey);
-      setIsCorrect(result.answer);
-
-      let newScore = score;
-      if (result.answer) {
-        newScore++;
-      }
-
-      setTimeout(() => {
-        {
-          if (result.answer) setScore(newScore);
-          const nextIndex = currentIndex + 1;
-          if (nextIndex < questions.length) {
-            setCurrentIndex(nextIndex);
-            setSelectedOption(null);
-            setIsCorrect(null);
-          } else {
-            navigate("/result", {
-              state: { score: newScore, total: questions.length },
-            });
-          }
-        }
-      }, 1500);
-    } catch (error) {
-      console.error("Error al enviar respuesta", error);
-      setSelectedOption(null);
-    }
-  };
-
   return (
     <div className="game-container">
       <div className="game-header">
@@ -101,30 +109,18 @@ const Game = () => {
           Pregunta {currentIndex + 1} / {questions.length}
         </span>
       </div>
+      {apiError && (
+        <p style={{ color: "red", marginBottom: "10px" }}>{apiError}</p>
+      )}
 
-      <div className="question-card">
-        <h2>{currentQuestion.question}</h2>
-
-        <div className="options-grid">
-          {optionsList.map((item) => {
-            let buttonClass = "option-btn";
-            if (selectedOption === item.key) {
-              if (isCorrect === true) buttonClass += " correct";
-              if (isCorrect === false) buttonClass += " incorrect";
-            }
-            return (
-              <button
-                key={item.key}
-                className={buttonClass}
-                onClick={() => handleAnswer(item.key)}
-                disabled={selectedOption !== null}
-              >
-                {item.value}
-              </button>
-            );
-          })}
-        </div>
-      </div>
+      <QuestionCard
+        question={currentQuestion.question}
+        options={optionsList}
+        selectedOption={selectedOption}
+        isCorrect={isCorrect}
+        onAnswer={handleAnswer}
+        isDisabled={selectedOption !== null}
+      />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getDifficulties } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo-preguntados.png";
