@@ -38,16 +38,14 @@ const Result = () => {
       <h1>Fin del Juego</h1>
 
       <div className="score-card">
-        <p className="score-text">Tu puntaje final:</p>
+        <p>Tu puntaje final:</p>
         <div className="score-number">
           {score} / {total}
         </div>
-        <p className="message">{message}</p>
+        <p>{message}</p>
       </div>
 
-      <button className="play-again-btn" onClick={handlePlayAgain}>
-        Volver a Jugar
-      </button>
+      <button onClick={handlePlayAgain}>Volver a Jugar</button>
     </div>
   );
 };

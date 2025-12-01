@@ -36,11 +36,7 @@ const Home = () => {
       ) : (
         <div className="button-container">
           {dificultades.map((diff) => (
-            <button
-              key={diff}
-              className="difficulty-btn"
-              onClick={() => handleDifficultyClick(diff)}
-            >
+            <button key={diff} onClick={() => handleDifficultyClick(diff)}>
               {diff}
             </button>
           ))}
