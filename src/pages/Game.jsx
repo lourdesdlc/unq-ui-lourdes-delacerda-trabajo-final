@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getQuestions, postAnswer } from "../services/api";
 import QuestionCard from "../components/QuestionCard";
+import AudioPlayer from "../components/AudioPlayer";
+
 import "../index.css";
 
 const Game = () => {
@@ -16,6 +18,7 @@ const Game = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
   const [apiError, setApiError] = useState(null);
+  const [selectedSound, setSelectedSound] = useState(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -48,6 +51,7 @@ const Game = () => {
 
     try {
       const result = await postAnswer(currentQuestion.id, itemKey);
+      setSelectedSound({ audio: result.answer ? 0 : 1 });
       setIsCorrect(result.answer);
 
       let currentScore = score;
@@ -63,6 +67,8 @@ const Game = () => {
           setSelectedOption(null);
           setIsCorrect(null);
         } else {
+          const finalSoundIndex = currentScore < 4 ? 2 : 3;
+          setSelectedSound({ audio: finalSoundIndex });
           navigate("/result", {
             state: { score: currentScore, total: questions.length },
           });
@@ -113,6 +119,7 @@ const Game = () => {
         <p style={{ color: "red", marginBottom: "10px" }}>{apiError}</p>
       )}
 
+      <AudioPlayer selectedSound={selectedSound}></AudioPlayer>
       <QuestionCard
         question={currentQuestion.question}
         options={optionsList}
