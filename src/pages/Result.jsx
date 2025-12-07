@@ -25,7 +25,7 @@ const Result = () => {
     message = "¡Perfecto! Sos un genio.";
   } else if (percentage >= 80) {
     message = "¡Excelente!";
-  } else if (percentage >= 50) {
+  } else if (percentage >= 40) {
     message = "¡Bien hecho!";
   }
 

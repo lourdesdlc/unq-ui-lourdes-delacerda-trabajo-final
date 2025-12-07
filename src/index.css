@@ -6,7 +6,7 @@
   --btn-text: #213547;
   --border-color: #ccc;
   
-  --primary: #d101ab;
+  --primary: #ff007f;
   --primary-hover: #b00090;
 }
 
@@ -128,6 +128,7 @@ button:disabled {
   margin-bottom: auto;
   padding-bottom: 40px; 
   width: 100%;
+  text-align: center;
 }
 .game-header {
   display: flex;
@@ -137,6 +138,63 @@ button:disabled {
   border-bottom: 2px solid var(--border-color);
   font-weight: bold;
   margin-bottom: 20px;
+  gap: 15px;
+  
+  & span {
+    white-space: nowrap; 
+    flex-shrink: 0;    
+    min-width: fit-content;
+  }
+
+  & .points {
+    display: inline-flex;
+    gap: 2px;
+    align-items: center;
+    background-color: var(--primary);
+    color: var(--text-color);
+    border-radius: 7px;
+    padding: 2px 7px 2px 4px;
+    font-weight: bold;
+  }
+
+  & a {
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    border-radius: 7px;
+    &:hover{
+      background-color: var(--btn-bg);
+    }
+  }
+}
+
+.progress-container {
+  flex-grow: 1;
+  height: 24px;           
+  background-color: var(--btn-bg);
+  border-radius: 12px;    
+  border: 1px solid var(--border-color);  
+  overflow: hidden;
+  position: relative; 
+  & span {
+    position: absolute;
+    width: 100%;       
+    text-align: center; 
+    top: 50%;           
+    transform: translateY(-50%); 
+    z-index: 5;        
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-color);
+    text-shadow: 0 0 2px var(--bg-color); 
+    left: 0; 
+  }
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--primary); 
+  transition: width 0.5s ease-in-out; 
 }
 
 /* ---------- Botones de dificultad ---------- */

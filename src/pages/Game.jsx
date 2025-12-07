@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { getQuestions, postAnswer } from "../services/api";
 import QuestionCard from "../components/QuestionCard";
 import AudioPlayer from "../components/AudioPlayer";
-
+import ProgressBar from "../components/ProgressBar";
 import "../index.css";
 
 const Game = () => {
@@ -109,10 +109,33 @@ const Game = () => {
   return (
     <div className="game-container">
       <div className="game-header">
-        <span>Puntos: {score}</span>
-        <span>Dificultad: {difficulty}</span>
-        <span>
-          Pregunta {currentIndex + 1} / {questions.length}
+        <a href="/">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={24}
+            height={24}
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M17.414 6.586a2 2 0 0 0-2.828 0L12 9.172L9.414 6.586a2 2 0 1 0-2.828 2.828L9.171 12l-2.585 2.586a2 2 0 1 0 2.828 2.828L12 14.828l2.586 2.586c.39.391.902.586 1.414.586s1.024-.195 1.414-.586a2 2 0 0 0 0-2.828L14.829 12l2.585-2.586a2 2 0 0 0 0-2.828"
+            ></path>
+          </svg>
+        </a>
+        <ProgressBar current={currentIndex + 1} total={questions.length} />
+        <span className="points">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={24}
+            height={24}
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="m12 17.275l-4.15 2.5q-.275.175-.575.15t-.525-.2t-.35-.437t-.05-.588l1.1-4.725L3.775 10.8q-.25-.225-.312-.513t.037-.562t.3-.45t.55-.225l4.85-.425l1.875-4.45q.125-.3.388-.45t.537-.15t.537.15t.388.45l1.875 4.45l4.85.425q.35.05.55.225t.3.45t.038.563t-.313.512l-3.675 3.175l1.1 4.725q.075.325-.05.588t-.35.437t-.525.2t-.575-.15z"
+            ></path>
+          </svg>
+          {score}
         </span>
       </div>
       {apiError && (
