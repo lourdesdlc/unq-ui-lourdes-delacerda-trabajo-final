@@ -250,11 +250,12 @@ button:disabled {
 }
 
 .score-number {
-  font-size: 4rem;
+  font-size: 3.7rem;
   font-weight: bold;
   color: var(--primary);
-  display: block;
-  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* ---------- Estados de respuesta ---------- */
